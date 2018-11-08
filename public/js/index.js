@@ -71,12 +71,20 @@ jQuery('#message-form').on('submit', function(e){
     
         navigator.geolocation.getCurrentPosition(function(position){
                 console.log(position);
-                socket.emit('createMessage', {
-                    text: `your position is at : lat : ${position.coords.latitude}, lon : ${position.coords.longitude}`,
-                    from: 'Server'
+                // socket.emit('createMessage', {
+                //     text: `your position is at : lat : ${position.coords.latitude}, lon : ${position.coords.longitude}`,
+                //     from: 'Server'
+                // }, function(response){
+                //     console.log(response);
+                // });
+                 socket.emit('createLocationMessage', {
+                     lat : position.coords.latitude,
+                     lon : position.coords.longitude,
+                     from: 'Server'
                 }, function(response){
                     console.log(response);
                 });
+
             },
         function(){
             alert('unable to fetch location')

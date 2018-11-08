@@ -2,6 +2,7 @@
 const path = require('path');
 const express = require('express');
 const socketio = require('socket.io');
+const message = require('./message');
 
 //requried to serve socket
 const http = require('http');
@@ -24,11 +25,6 @@ app.use(express.static(publicPath));
  //this is a listener exampple
 io.on('connection', (socket)=>{
     console.log('new user connected');
-
-
- 
-
-
 
     socket.emit('newMessage', 
     {
@@ -71,10 +67,19 @@ io.on('connection', (socket)=>{
         callback('received at: '+ Date.now());
         
     });
+
+    socket.on('createLocationMessage', (createdMessage,callback)=>{
+        var locationMessage
+        locationMessage= message.generateLocationMessage(createdMessage.from, createdMessage.lat, createdMessage.lon) 
+        console.log('this is from location message: '+JSON.stringify(locationMessage));
+        io.emit('newMessage', { 
+            from: locationMessage.from, 
+            text: locationMessage.url
+        },
+        callback('received at: '+ Date.now()));
+        
+    });
     
-
-
-
     //listen to disconnect built in event and write down what's happening
     socket.on('disconnect', (socket)=>{
         console.log('a client disconnected from our server')
