@@ -25,34 +25,44 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=>{
     console.log('new user connected');
 
-    //this is sending event to client example
-    // socket.emit('newEmail',{
-    //     'from': 'mile@gmail.com',
-    //     'body': 'Hey whatsup',
-    //     'createdAt': 1123
-    // });
+ 
 
-    // //listen to broadcast
-    // socket.on('createEmail', (newEmail)=>{
-    //     console.log('this is createEmail event with new mail: ', newEmail)
-    // });
+ 
+
+
 
     socket.emit('newMessage', 
     {
         "from": "admin@babu.com",
-         "body":"hi you''re connected to support @babu.com, what can I help you with?", 
+         "body":"hi you\'re connected to support @babu.com, what can I help you with?",
          "createdAt":Date.now()
     });
 
+    socket.on('newUserLoggedIn',(welcomeMessage)=>{
+        console.log(welcomeMessage);
+        socket.broadcast.emit('welcomeMessage',{
+            userName: "welcome to chat room "+ welcomeMessage.userName
+        });
+    });
+
+
+
+
     socket.on('createMessage', (createdMessage)=>{
-     
-        // JSON.parse(createdMessage.body);
-        // var timestamp =  Date.now();
-        //MessageArray.push(timestamp);
         console.log(createdMessage);
-        
-        
-        
+
+
+        //these lines is for broadcasting messages. the drawback is that the message are broadcasted to everyone including sender
+        // io.emit('newMessage', {
+        //    from: createdMessage.from,
+        //    text: createdMessage.message,
+        //     createdAt: Date.now()
+        // });
+        // socket.broadcast.emit('newMessage',{
+        //     from: createdMessage.from,
+        //     text: createdMessage.message,
+        //     createdAt: Date.now()
+        // })
     });
 
     //listen to disconnect built in event and write down what's happening
