@@ -25,7 +25,6 @@ app.use(express.static(publicPath));
 io.on('connection', (socket)=>{
     console.log('new user connected');
 
- 
 
  
 
@@ -34,7 +33,7 @@ io.on('connection', (socket)=>{
     socket.emit('newMessage', 
     {
         "from": "admin@babu.com",
-         "body":"hi you\'re connected to support @babu.com, what can I help you with?",
+         "text":"hi you\'re connected to support @babu.com, what can I help you with?",
          "createdAt":Date.now()
     });
 
@@ -43,14 +42,6 @@ io.on('connection', (socket)=>{
         socket.broadcast.emit('welcomeMessage',{
             userName: "welcome to chat room "+ welcomeMessage.userName
         });
-    });
-
-
-
-
-    socket.on('createMessage', (createdMessage)=>{
-        console.log(createdMessage);
-
 
         //these lines is for broadcasting messages. the drawback is that the message are broadcasted to everyone including sender
         // io.emit('newMessage', {
@@ -58,12 +49,31 @@ io.on('connection', (socket)=>{
         //    text: createdMessage.message,
         //     createdAt: Date.now()
         // });
+
+        //this one broadcast to everyone but the sender
         // socket.broadcast.emit('newMessage',{
         //     from: createdMessage.from,
         //     text: createdMessage.message,
         //     createdAt: Date.now()
         // })
     });
+
+
+
+    //event acknowledgement examples
+    // socket.on('createMessage', (createdMessage,)=>{
+    //     console.log(createdMessage);
+    // });
+    //from these lines to below lines
+
+    socket.on('createMessage', (createdMessage,callback)=>{
+        io.emit('newMessage', createdMessage);
+        callback('received at: '+ Date.now());
+        
+    });
+    
+
+
 
     //listen to disconnect built in event and write down what's happening
     socket.on('disconnect', (socket)=>{

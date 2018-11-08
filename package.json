@@ -15,7 +15,6 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
-    "localStorage": "^1.0.4",
     "socket.io": "^2.1.1"
   }
 }
