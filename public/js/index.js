@@ -61,17 +61,20 @@ jQuery('#message-form').on('submit', function(e){
 
 });
 
-var locationButton = jQuery('#send-location');
-locationButton.on('click', function(){
-    if (!navigator.geolocation){
-        return alert('geolocation is not supported')
-    }
-
-    navigator.geolocation.getCurrentPosition(function(position){
-            console.log(position);
-        },
-    function(){
-        alert('unable to fetch location')
+    var locationButton = jQuery('#send-location');
+    locationButton.on('click', function(){
+        // debugger
+        
+        if (!navigator.geolocation){
+            return alert('geolocation is not supported')
+        }
+    
+        navigator.geolocation.getCurrentPosition(function(position){
+                console.log(position);
+            },
+        function(){
+            alert('unable to fetch location')
+        });
     });
-});
+
 
