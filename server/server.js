@@ -72,7 +72,8 @@ io.on('connection', (socket)=>{
         var locationMessage
         locationMessage= message.generateLocationMessage(createdMessage.from, createdMessage.lat, createdMessage.lon) 
         console.log('this is from location message: '+JSON.stringify(locationMessage));
-        io.emit('newMessage', { 
+        //change the emit location for location tag
+        io.emit('newLocationMessage', { 
             from: locationMessage.from, 
             text: locationMessage.url
         },

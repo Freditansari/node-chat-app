@@ -37,9 +37,22 @@ socket.on('disconnect',function (){
 //   });
 
 socket.on('newMessage', function(receivedMessage){
-    console.log(receivedMessage);
+   
     var li = jQuery('<li></li>');
     li.text(`${receivedMessage.from}: ${receivedMessage.text}`);
+
+    jQuery('#messages').append(li);
+});
+
+socket.on('newLocationMessage', function(receivedMessage){
+    console.log('this is from new location '+receivedMessage);
+    var li = jQuery('<li></li>');
+    var a = jQuery('<a target="_blank">My Current Location</a>');
+
+
+    li.text(`${receivedMessage.from}:`);
+    a.attr('href', receivedMessage.text);
+    li.append(a);
 
     jQuery('#messages').append(li);
 });
